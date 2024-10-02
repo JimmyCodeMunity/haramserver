@@ -97,7 +97,7 @@ const getUserData = async(req,res)=>{
 const findOnlineDrivers= async(req,res)=>{
   try {
     const onlineDrivers = await Driver.find({ isOnline: true });
-    console.log("found driver", onlineDrivers);
+    // console.log("found driver", onlineDrivers);
     res.status(200).json(onlineDrivers)
     
   } catch (error) {
@@ -108,9 +108,25 @@ const findOnlineDrivers= async(req,res)=>{
 }
 
 
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ message: "User data fetched successfully", user });
+  } catch (error) {
+    console.error("Error getting user data", error);
+    res.status(500).json({ error: "Failed to get user data." });
+  }
+};
+
+
 module.exports = {
     createUser,
     userLogin,
     getUserData,
-    findOnlineDrivers
+    findOnlineDrivers,
+    getUserById
 }
